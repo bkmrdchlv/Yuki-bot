@@ -17,7 +17,7 @@ func Load() Config {
 	c := Config{}
 
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "development"))
-	c.BotToken = cast.ToString(getOrReturnDefault("TELEGRAMM_BOT_TOKEN", "7562383282:AAG2Fp7oijMNDvBYjL2Z9_hZLXke1LNzats"))
+	c.BotToken = cast.ToString(getOrReturnDefault("TELEGRAMM_BOT_TOKEN", "7520780560:AAEh4zSUefIxPBKpuCxtP57-8wcL-Av9toY"))
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	return c
 }
