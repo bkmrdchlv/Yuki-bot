@@ -1,35 +1,31 @@
-# Use the official Golang image as the base image for building
-FROM golang:1.23.2 AS builder
+# Use the official Golang image as a base for building the application
+FROM golang:1.18 AS builder
 
-# Set the Current Working Directory inside the container
-WORKDIR /app
+# Set the GOPATH and create necessary directories
+RUN mkdir -p $GOPATH/src/a/b/Yuki-bot 
+WORKDIR $GOPATH/src/a/b/Yuki-bot
 
-# Copy go.mod and go.sum files first to leverage Docker cache
-COPY go.mod go.sum ./
+# Copy the local package files to the container's workspace
+COPY . ./
 
-# Download all dependencies
-RUN go mod download
+# Install dependencies and build the application
+RUN go mod vendor && \
+    make build
 
-# Copy the source code into the container
-COPY . .
+# Move the built binary to the root directory
+RUN mv ./bin/Yuki-bot /
 
-# Build the Go app from cmd/main.go
-RUN GOOS=linux GOARCH=amd64 go build -o telegram-bot cmd/main.go
+# Expose port 80
+EXPOSE 80
 
-# Start a new stage from scratch to keep the image small
-FROM alpine:latest  
+# Final stage - use a minimal image for production
+FROM alpine
 
-# Set the Current Working Directory inside the container
-WORKDIR /root/
+# Copy the compiled binary from the builder stage
+COPY --from=builder /Yuki-bot .
 
-# Copy the Pre-built binary file from the previous stage
-COPY --from=builder /app/telegram-bot .
+# Copy the src folder from the builder stage if needed
+COPY --from=builder /go/src/a/b/Yuki-bot/src /src
 
-# Ensure it's executable (optional)
-RUN chmod +x telegram-bot
-
-# Expose port (if your bot listens on a specific port)
-EXPOSE 8080
-
-# Command to run the executable
-CMD ["./telegram-bot"]
+# Command to run the binary
+ENTRYPOINT ["/Yuki-bot"]

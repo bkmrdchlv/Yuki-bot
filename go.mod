@@ -1,6 +1,6 @@
 module gitlab.com/jp_hieros_bot
 
-go  1.21
+go 1.21
 
 require (
 	github.com/spf13/cast v1.7.0
