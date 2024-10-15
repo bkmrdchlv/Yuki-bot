@@ -1,0 +1,6 @@
+# github.com/spf13/cast v1.7.0
+## explicit; go 1.19
+github.com/spf13/cast
+# gopkg.in/telebot.v3 v3.3.8
+## explicit; go 1.16
+gopkg.in/telebot.v3
