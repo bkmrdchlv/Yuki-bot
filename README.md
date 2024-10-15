@@ -1,2 +1,0 @@
-# Yuki-bot
-Yuki bot
